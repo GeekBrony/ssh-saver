@@ -11,11 +11,23 @@
 #import "ViewController.h"
 #import <NMSSH/NMSSH.h>
 
+@interface ViewController () {
+    NSString *connName;
+    NSString *connHost;
+    int connPort;
+    NSString *connUser;
+    NSString *connPass;
+    NMSSHSession *session;
+    NMSSHChannel *channel;
+}
+
+@end
+
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     // Do any additional setup after loading the view.
 }
 
@@ -48,7 +60,48 @@
     //[w setContentSize:self.view.frame.size];
     [w setFrame:ch display:NO animate:YES];
     [w setContentView:self.view];
+}
+
+- (IBAction)connectButton:(id)sender {
+    connName = _nameField.stringValue;
+    connHost = _hostField.stringValue;
+    connPort = _portBox.intValue;
+    connUser = _userField.stringValue;
+    connPass = _passField.stringValue;
     
+    int connection = [self connectWith:connHost port:connPort user:connUser password:connPass];
+    
+    if(connection) {
+        channel = session.channel;
+        if(_commandToRun.stringValue.length != 0) {
+            NSError *e = nil;
+            [channel execute:_commandToRun.stringValue error:&e];
+        }
+    } else {
+        // Try again?
+    }
+}
+
+- (int)connectWith:(NSString *)host port:(int)port user:(NSString *)user password:(NSString *)password {
+    session = [NMSSHSession connectToHost:host port:(port == 0 ? 22 : port) withUsername:user];
+    NSLog(@"Connecting.");
+    [session connect];
+    if(session.isConnected) {
+        NSLog(@"Connected.");
+        [session authenticateByPassword:password];
+        NSLog(@"Authenticating.");
+        if(session.authorized) {
+            NSLog(@"Authorized.");
+            return 0;
+        } else {
+            // do a thing;
+            return 1;
+        }
+    } else {
+        NSLog(@"Not connected.");
+        return 1;
+    }
     
 }
+
 @end

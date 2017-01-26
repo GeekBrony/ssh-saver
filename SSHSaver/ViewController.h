@@ -18,6 +18,8 @@
 @property (weak) IBOutlet NSTextField *runField;
 @property (weak) IBOutlet NSButton *illuminatiSwitch;
 - (IBAction)advancedToggle:(id)sender;
+- (IBAction)connectButton:(id)sender;
+@property (weak) IBOutlet NSTextField *commandToRun;
 
 @end
 
