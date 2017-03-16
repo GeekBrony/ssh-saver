@@ -5,4 +5,5 @@ macOS tool to quickly connect to SSH servers with ease.
 [![Code Climate](https://codeclimate.com/github/GeekBrony/ssh-saver/badges/gpa.svg)](https://codeclimate.com/github/GeekBrony/ssh-saver)
 
 ## Disclaimer
-Currently, this program is in development and can't serve it's main function right now.
+Currently, this program is in (non-prioritized) development - if I find myself interested in developing the rest of it, I will.
+SSHSaver is incomplete and can't serve it's main function right now.
